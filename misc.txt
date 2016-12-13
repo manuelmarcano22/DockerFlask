@@ -1,0 +1,1 @@
+docker run --name flask3example -d -p 8000:8000 --net=host flask3
