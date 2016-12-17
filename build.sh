@@ -1,5 +1,5 @@
 #!/bin/bash
-docker build  -t dockerflask .
+docker build -f Dockerfile -t dockerflask .
 if docker ps -a | grep --quiet flask3example; then 
 docker stop flask3example
 docker rm flask3example ;
