@@ -13,7 +13,7 @@ RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
     rm ~/miniconda.sh
 
-RUN apt-get install -y curl grep sed dpkg && \
+RUN apt-get install -y curl grep vim sed dpkg tmux && \
     TINI_VERSION=`curl https://github.com/krallin/tini/releases/latest | grep -o "/v.*\"" | sed 's:^..\(.*\).$:\1:'` && \
     curl -L "https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini_${TINI_VERSION}.deb" > tini.deb && \
     dpkg -i tini.deb && \
@@ -26,7 +26,9 @@ ENV PATH /opt/conda/bin:$PATH
 RUN conda install Flask
 
 # Bundle app source
-COPY simpleapp.py /src/simpleapp.py
+#COPY simpleapp.py /src/simpleapp.py
+COPY simpleapp.py /root/simpleapp.py
+COPY .tmux.conf /root/.tmux.conf
 
 EXPOSE  8000
-CMD ["python", "/src/simpleapp.py", "-p 8000"]
+CMD ["python", "/root/simpleapp.py", "-p 8000"]
