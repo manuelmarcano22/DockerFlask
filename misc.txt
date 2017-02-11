@@ -1,1 +1,4 @@
 docker run --name flask3example -d -p 8000:8000 --net=host flask3
+
+#to open a bash terminal
+docker exec -it nameofcontainer bash 

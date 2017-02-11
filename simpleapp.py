@@ -68,4 +68,4 @@ if __name__ == '__main__':
     if args.port == None:
         print("Missing required argument: -p/--port")
         sys.exit(1)
-    app.run(host='grades.manuelpm.me', port=int(args.port), debug=False)
+    app.run(port=int(args.port), debug=False)

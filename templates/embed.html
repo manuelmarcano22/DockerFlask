@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv='content-type' content='text/html; charset=utf-8' />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1" > 
+<meta name="viewport" content="width=device-width, initial-scale=1" >
+<link type="image/x-icon" rel="shortcut icon" href="./favicon.ico">
+<link type="text/css" rel="stylesheet" href="{{url_for('static',filename='js9support.css') }}">
+<link type="text/css" rel="stylesheet" href="{{url_for('static',filename='js9.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='js9support.min.js') }}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='js9.min.js') }}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='js9plugins.js') }}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='cx25.js') }}"></script>
+
+    <title>Embed Demo</title>
+
+    {{ js_resources|indent(4)|safe }}
+
+    {{ css_resources|indent(4)|safe }}
+
+    {{ plot_script|indent(4)|safe }}
+
+  </head>
+  <body>
+    <!-- A simple form for changing the graph -->
+    <p> Select your settings: </p>
+    <form name="color_button" method='GET'>
+        Color:
+        <select name="color">
+            <option value="Red">Red</option>
+            <option value="Green">Green</option>
+            <option value="Blue">Blue</option>
+            <option selected="selected" value="Black">Black</option>
+        </select>
+        <br>
+        From:
+        <input type="text" name="_from" value="{{ _from }}">
+        <br>
+        To:
+        <input type="text" name="to" value="{{ to }}">
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+    {{ plot_div|indent(4)|safe }}
+    <p> Demonstrates some very simple embedding into a webpage</p>
+    <br/>
+<div class="JS9">
+
+
+  </body>
+</html>
