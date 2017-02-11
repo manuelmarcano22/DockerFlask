@@ -26,17 +26,21 @@ def getitem(obj, item, default):
 
 start = int(round(time.time()))
 
+def hola(x):
+    
+    return x+1
+
 @app.route("/")
 def polynomial():
     """ Very simple embedding of a polynomial chart
     """
-
     # Grab the inputs arguments from the URL
     args = flask.request.args
 
     # Get all the form arguments in the url with defaults
     color = colors[getitem(args, 'color', 'Black')]
     _from = int(getitem(args, '_from', 0))
+    _from = hola(_from)
     to = int(getitem(args, 'to', 10))
 
     # Create a polynomial line graph with those arguments
