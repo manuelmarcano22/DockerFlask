@@ -23,6 +23,13 @@ RUN apt-get install -y curl grep vim sed dpkg tmux && \
 ENV PATH /opt/conda/bin:$PATH
 
 # Install app dependencies
+
+#Astroconda
+RUN /opt/conda/bin/conda config --add channels http://ssb.stsci.edu/astroconda
+RUN /opt/conda/bin/conda create -y -n iraf27 python=2.7 iraf pyraf 
+RUN /bin/bash -c "source activate /opt/conda/envs/iraf27"
+
+#Dependencies
 RUN conda install Flask
 RUN conda install bokeh
 
