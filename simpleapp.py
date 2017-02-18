@@ -8,7 +8,7 @@ from bokeh.plotting import figure
 from bokeh.resources import INLINE
 from bokeh.util.string import encode_utf8
 #from pyraf import iraf
-#from astropy.io import fits
+from astropy.io import fits
 
 
 app = Flask(__name__)

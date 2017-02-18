@@ -26,12 +26,12 @@ ENV PATH /opt/conda/bin:$PATH
 
 #Astroconda
 RUN /opt/conda/bin/conda config --add channels http://ssb.stsci.edu/astroconda
-RUN /opt/conda/bin/conda create -y -n iraf27 python=2.7 iraf pyraf 
+RUN /opt/conda/bin/conda create -y -n iraf27 python=2.7 iraf pyraf Flask bokeh
 RUN /bin/bash -c "source activate /opt/conda/envs/iraf27"
 
 #Dependencies
-RUN conda install Flask
-RUN conda install bokeh
+#RUN /opt/conda/envs/iraf27/bin/conda install Flask
+#RUN /opt/conda/envs/iraf27/bin/conda install bokeh
 
 # Bundle app source
 #COPY simpleapp.py /src/simpleapp.py
@@ -43,4 +43,4 @@ ADD images /root/images/
 
 
 EXPOSE  8000
-CMD ["python", "/root/simpleapp.py", "-p 8000"]
+CMD ["/opt/conda/envs/iraf27/bin/python", "/root/simpleapp.py", "-p 8000"]
