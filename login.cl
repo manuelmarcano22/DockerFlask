@@ -14,8 +14,8 @@ set	userid		= ""
 # when issuing the MKIRAF and no longer key off the unix TERM to set a
 # default.
 if (access (".hushiraf") == no)
-    print "setting terminal type to xterm..."
-stty xterm
+    print "setting terminal type to dumb..."
+stty dumb
 
 
 # Uncomment and edit to change the defaults.

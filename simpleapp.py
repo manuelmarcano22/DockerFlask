@@ -30,10 +30,16 @@ def getitem(obj, item, default):
 
 start = int(round(time.time()))
 
+fitsfile1 = 'static/cx25/cx25.fits'
+fitsfile1d = fits.open(fitsfile1)
 
-
-
-
+#Exposure time to multiply the image
+exptime = fitsfile1d[0].header['EXPTIME']
+op = 'im1* '+str(exptime)
+#
+iraf.stsdas()
+iraf.images.imutil()
+iraf.images.imutil.imarith(fitsfile1, '*', exptime, 'cx25sexm.fits')
 
 
 
