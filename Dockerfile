@@ -45,6 +45,12 @@ ADD templates /root/templates/
 ADD static /root/static/
 ADD images /root/images/
 
+#try
+RUN apt-get install gcc-multilib
 
 EXPOSE  8000
-CMD ["/opt/conda/envs/iraf27/bin/python", "/root/simpleapp.py", "-p 8000"]
+#CMD ["/opt/conda/envs/iraf27/bin/python", "/root/simpleapp.py", "-p 8000"]
+ADD start.sh /root/start.sh
+RUN chmod +x start.sh
+ENTRYPOINT ["/bin/bash","start.sh"]
+#CMD ["bash","-c", "start.sh"]

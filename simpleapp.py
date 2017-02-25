@@ -10,7 +10,7 @@ from bokeh.util.string import encode_utf8
 from astropy.io import fits
 from stsci.tools import capable
 capable.OF_GRAPHICS = False
-#from pyraf import iraf
+from pyraf import iraf
 
 
 app = Flask(__name__)
