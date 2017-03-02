@@ -74,7 +74,6 @@ ENV PATH /opt/conda/bin:$PATH
 #Astroconda
 RUN /opt/conda/bin/conda config --add channels http://ssb.stsci.edu/astroconda
 RUN /opt/conda/bin/conda create -y -n iraf27 python=2.7 iraf pyraf Flask bokeh
-RUN /bin/bash -c "source /opt/conda/envs/iraf27/bin/activate iraf27"
 
 WORKDIR "/root"
 ADD login.cl /root/login.cl
