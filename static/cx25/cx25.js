@@ -1,5 +1,5 @@
 function downloadJSAtOnload() {
-   JS9.Preload("static/cx25/cx25.fits",{scale:'log',onload: func})
+   JS9.Preload("static/cx25/cx25pre.fits",{scale:'log',onload: func})
  }
   if (window.addEventListener)
       window.addEventListener("load", downloadJSAtOnload, false);
