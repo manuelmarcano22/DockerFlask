@@ -215,7 +215,6 @@ def polynomial():
     # Get all the form arguments in the url with defaults
     color = colors[getitem(args, 'color', 'Black')]
     _from = int(getitem(args, '_from', 0))
-    _from = hola(_from)
     to = int(getitem(args, 'to', 10))
 
     # Create a polynomial line graph with those arguments
@@ -248,4 +247,4 @@ if __name__ == '__main__':
         print("Missing required argument: -p/--port")
         sys.exit(1)
     app.debug = True
-    app.run(host='grades.manuelpm.me',port=int(args.port), debug=False)
+    app.run(host='127.0.0.1',port=int(args.port), debug=False)
