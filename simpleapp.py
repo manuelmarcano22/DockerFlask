@@ -65,8 +65,9 @@ def polynomial():
 #    high = 50
     #
     ##name of apfile
+    #I am not sure if I need to do this
     if os.path.exists('cx25sexm.ms.fits'):
-        os.remove('cx25sexm.ms.fits')
+        os.rename('cx25sexm.ms.fits','cx25sexm.msrecent.fits')
         os.remove('cx25sexm.fits')
 
     if not os.path.exists('database'):
@@ -123,6 +124,8 @@ def polynomial():
     iraf.noao.twodspec.apextract()
     #http://vivaldi.ll.iac.es/sieinvens/siepedia/pmwiki.php?n=HOWTOs.PythonianIRAF
     iraf.noao.apextract.apall.setParam('input',fitsfile)
+    #try output
+    iraf.noao.apextract.apall.setParam('output','cx25sexm.ms.fits')
     #
     ##iraf.noao.twodspec.apextract.apall.setParam('lower','-5.0')
     ##iraf.noao.twodspec.apextract.apall.setParam('upper','1.0')
@@ -145,10 +148,11 @@ def polynomial():
 
     #########begin createpsectrawithbokeh.py 
     ##Get data
-    if not os.path.exists('cx25sexm.fits'):
+    #I am not usre if I need this. 
+    if not os.path.exists('cx25sexm.msrecent.fits'):
         srfm = fits.open('static/cx25/cx25sexm.ms.fits')
-    srfm = fits.open('cx25sexm.fits')
-    secondstar = srfm[0].data[0]
+    srfm = fits.open('cx25sexm.ms.fits')
+    secondstar = srfm[0].data
     #
     ##For srfm[0].header["CTYPE1"] = 'LINEAR'
     xn = srfm[0].header["NAXIS1"]
@@ -240,7 +244,7 @@ def polynomial():
     js_resources = INLINE.render_js()
     css_resources = INLINE.render_css()
 
-    script, div = components(plot)
+    script, div = components(layout)
     html = flask.render_template(
         'embed.html',
         plot_script=script,
