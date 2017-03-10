@@ -21,13 +21,6 @@ from shutil import copyfile
 
 app = Flask(__name__)
 
-colors = {
-    'Black': '#000000',
-    'Red':   '#FF0000',
-    'Green': '#00FF00',
-    'Blue':  '#0000FF',
-}
-
 def getitem(obj, item, default):
     if item not in obj:
         return default
@@ -47,87 +40,6 @@ start = int(round(time.time()))
 #iraf.images.imutil.imarith(fitsfile1, '*', exptime, 'cx25sexm.fits')
 
 
-##---- begin spectracx25.py ----#
-#
-##To modify the center, low and high parameter
-center = 100
-low = -10.1
-high = 50
-#
-##name of apfile
-
-if not os.path.exists('database'):
-    os.makedirs('database')
-    os.makedirs('uparm')
-#filename = 'static/cx25/database/apcx25sexm' 
-filename = 'database/apcx25sexm' 
-copyfile('static/cx25/database/apcx25sexm',filename)
-copyfile('static/cx25/twcapextt.par','uparm/twcapextt.par')
-###name original SEXM
-##fitsfile1 = 'VI_SEXM_577734_2011-06-24T05:56:42.518_G475_MR_402230_Q4_hi.fits'
-fitsfile1 = 'static/cx25/cx25.fits'
-fitsfile1d = fits.open(fitsfile1)
-#
-###Exposure time to multiply the image
-exptime = fitsfile1d[0].header['EXPTIME']
-op = 'im1* '+str(exptime)
-###
-iraf.stsdas()
-iraf.images.imutil()
-#iraf.images.imutil.imarith(fitsfile1, '*', exptime, 'static/cx25/cx25sexm.fits')
-iraf.images.imutil.imarith(fitsfile1, '*', exptime, 'cx25sexm.fits')
-##
-###Work with image
-#fitsfile = 'static/cx25/cx25sexm.fits'
-fitsfile = 'cx25sexm.fits'
-fitsdata = fits.getdata(fitsfile)
-###Default for dispesion line is half of the image
-dispersion = fitsdata[:,fitsdata.shape[1]/2]
-###create times the observing time
-##
-with open(filename) as f:
-	for lines in f:
-		if 'center' in lines:
-	    		numerocenter = lines.split()[2]
-		if 'low' in lines:
-	    		numerolow = lines.split()[2]
-		if 'high' in lines:
-	    		numerohigh = lines.split()[2]
-	    		break
-
-with open(filename) as f:
-	filedata = f.read()
-
-filedata = filedata.replace(numerocenter,str(center))
-filedata = filedata.replace(numerolow,str(low))
-filedata = filedata.replace(numerohigh,str(high))
-
-with open(filename,'w') as f:
-	f.write(filedata)
-
-#Call them 
-iraf.noao.twodspec()
-iraf.noao.twodspec.apextract()
-#http://vivaldi.ll.iac.es/sieinvens/siepedia/pmwiki.php?n=HOWTOs.PythonianIRAF
-iraf.noao.apextract.apall.setParam('input',fitsfile)
-#
-##iraf.noao.twodspec.apextract.apall.setParam('lower','-5.0')
-##iraf.noao.twodspec.apextract.apall.setParam('upper','1.0')
-#
-iraf.noao.twodspec.apextract.apall.setParam('recenter','no')
-iraf.noao.twodspec.apextract.apall.setParam('resize','no')
-iraf.noao.twodspec.apextract.apall.setParam('edit','no')
-iraf.noao.twodspec.apextract.apall.setParam('trace','no')
-iraf.noao.twodspec.apextract.apall.setParam('interactive','no')
-iraf.noao.twodspec.apextract.apall.setParam('upper','1.0')
-iraf.noao.twodspec.apextract.apall.setParam('apertures','1')
-iraf.noao.twodspec.apextract.apall.setParam('find','no')
-#iraf.noao.apextract.apall.saveParList(filename='static/cx25/cx25.par')
-#iraf.noao.twodspec.apextract.apall(ParList='static/cx25/cx25.par')
-iraf.noao.apextract.apall.saveParList(filename='uparm/cx25.par')
-iraf.noao.twodspec.apextract.apall(ParList='uparm/cx25.par')
-###### end spectracx25.py
-
 
 
 
@@ -141,78 +53,166 @@ def polynomial():
     args = flask.request.args
 
     # Get all the form arguments in the url with defaults
-    color = colors[getitem(args, 'color', 'Black')]
-    _from = int(getitem(args, '_from', 0))
-    to = int(getitem(args, 'to', 10))
+    center = int(getitem(args, 'center', 100))
+    low = int(getitem(args, 'low',-10.1 ))
+    high = int(getitem(args, 'high', 50))
 
-#    #########begin createpsectrawithbokeh.py 
-#    ##Get data
-#    srfm = fits.open('cx25sexm.fits')
-#    secondstar = srfm[0].data[0]
-#    #
-#    ##For srfm[0].header["CTYPE1"] = 'LINEAR'
-#    xn = srfm[0].header["NAXIS1"]
-#    refx = srfm[0].header["CRVAL1"]
-#    step = srfm[0].header['CD1_1']
-#    cr = srfm[0].header['CRPIX1']
-#    #
-#    xlist = [ refx + step*(i - cr) for i in np.arange(1, len(secondstar)+1) ]
-#    #
-#    name = 'spectraap3cx25smoothsky'
-#
-#    hover = HoverTool(
-#            tooltips=[
-#                ("index", "$index"),
-#                ("(x,y)", "($x{1}, $y)"),
-#            ]
-#        )
-#
-#    #Create ColumnDataSource
-#    x = np.array(xlist)
-#    y = np.array(secondstar)
-#    #Create y for each smooth. Need to fix this
-#    ysmooth3 = convolve(y, Box1DKernel(3))
-#    ysmooth5 = convolve(y, Box1DKernel(5))
-#
-#    source = ColumnDataSource(data=dict(x=x,y=y))
-#    source3 = ColumnDataSource(data=dict(x=x,y=ysmooth3))
-#    source5 = ColumnDataSource(data=dict(x=x,y=ysmooth5))
-#
-#    plot = figure(x_axis_label='Angstrom', y_axis_label='Y')
-#    plot.add_tools(hover)
-#    plot.add_tools(tools.ResizeTool())
-#    #Eraaseplot.line(xlist,secondstar)
-#    plot.line('x','y',source=source)
-#
-#    ##Callback in JS
-#    callback = CustomJS(args=dict(source=source,source3=source3,source5=source5), code="""
-#            var data = source.data;
-#            var data3 = source3.data;
-#            var data5 = source5.data;
-#            var f = cb_obj.value
-#            y = data['y']
-#            y3 = data3['y']
-#            y5 = data5['y']
-#            
-#            if (f == 3.0){
-#            for (i = 0; i < y.length; i++) {
-#                y[i] = y3[i]
-#            }
-#            }
-#            
-#            if (f == 5.0){
-#            for (i = 0; i < y.length; i++) {
-#                y[i] = y5[i]
-#            }
-#            }
-#            source.trigger('change');
-#        """)
-#
-#
-#    #Set up slider
-#    slider = Slider(title="Smooth Curve", value=1.0, start=1.0, end=5.0, step=2.0,callback=callback)
-#
-#    layout = column(slider, plot)
+    ##---- begin spectracx25.py ----#
+    #
+    ##To modify the center, low and high parameter
+#    center = 100
+#    low = -10.1
+#    high = 50
+    #
+    ##name of apfile
+    if os.path.exists('cx25sexm.ms.fits'):
+        os.remove('cx25sexm.ms.fits')
+        os.remove('cx25sexm.fits')
+
+    if not os.path.exists('database'):
+        os.makedirs('database')
+        os.makedirs('uparm')
+    #filename = 'static/cx25/database/apcx25sexm' 
+    filename = 'database/apcx25sexm' 
+    copyfile('static/cx25/database/apcx25sexm',filename)
+    copyfile('static/cx25/twcapextt.par','uparm/twcapextt.par')
+    ###name original SEXM
+    ##fitsfile1 = 'VI_SEXM_577734_2011-06-24T05:56:42.518_G475_MR_402230_Q4_hi.fits'
+    fitsfile1 = 'static/cx25/cx25.fits'
+    fitsfile1d = fits.open(fitsfile1)
+    #
+    ###Exposure time to multiply the image
+    exptime = fitsfile1d[0].header['EXPTIME']
+    op = 'im1* '+str(exptime)
+    ###
+    iraf.stsdas()
+    iraf.images.imutil()
+    #iraf.images.imutil.imarith(fitsfile1, '*', exptime, 'static/cx25/cx25sexm.fits')
+    iraf.images.imutil.imarith(fitsfile1, '*', exptime, 'cx25sexm.fits')
+    ##
+    ###Work with image
+    #fitsfile = 'static/cx25/cx25sexm.fits'
+    fitsfile = 'cx25sexm.fits'
+    fitsdata = fits.getdata(fitsfile)
+    ###Default for dispesion line is half of the image
+    dispersion = fitsdata[:,fitsdata.shape[1]/2]
+    ###create times the observing time
+    ##
+    with open(filename) as f:
+        for lines in f:
+            if 'center' in lines:
+                    numerocenter = lines.split()[2]
+            if 'low' in lines:
+                    numerolow = lines.split()[2]
+            if 'high' in lines:
+                    numerohigh = lines.split()[2]
+                    break
+
+    with open(filename) as f:
+        filedata = f.read()
+
+    filedata = filedata.replace(numerocenter,str(center))
+    filedata = filedata.replace(numerolow,str(low))
+    filedata = filedata.replace(numerohigh,str(high))
+
+    with open(filename,'w') as f:
+        f.write(filedata)
+
+    #Call them 
+    iraf.noao.twodspec()
+    iraf.noao.twodspec.apextract()
+    #http://vivaldi.ll.iac.es/sieinvens/siepedia/pmwiki.php?n=HOWTOs.PythonianIRAF
+    iraf.noao.apextract.apall.setParam('input',fitsfile)
+    #
+    ##iraf.noao.twodspec.apextract.apall.setParam('lower','-5.0')
+    ##iraf.noao.twodspec.apextract.apall.setParam('upper','1.0')
+    #
+    iraf.noao.twodspec.apextract.apall.setParam('recenter','no')
+    iraf.noao.twodspec.apextract.apall.setParam('resize','no')
+    iraf.noao.twodspec.apextract.apall.setParam('edit','no')
+    iraf.noao.twodspec.apextract.apall.setParam('trace','no')
+    iraf.noao.twodspec.apextract.apall.setParam('interactive','no')
+    iraf.noao.twodspec.apextract.apall.setParam('upper','1.0')
+    iraf.noao.twodspec.apextract.apall.setParam('apertures','1')
+    iraf.noao.twodspec.apextract.apall.setParam('find','no')
+    #iraf.noao.apextract.apall.saveParList(filename='static/cx25/cx25.par')
+    #iraf.noao.twodspec.apextract.apall(ParList='static/cx25/cx25.par')
+    iraf.noao.apextract.apall.saveParList(filename='uparm/cx25.par')
+    iraf.noao.twodspec.apextract.apall(ParList='uparm/cx25.par')
+    ###### end spectracx25.py
+
+
+
+    #########begin createpsectrawithbokeh.py 
+    ##Get data
+    if not os.path.exists('cx25sexm.fits'):
+        srfm = fits.open('static/cx25/cx25sexm.ms.fits')
+    srfm = fits.open('cx25sexm.fits')
+    secondstar = srfm[0].data[0]
+    #
+    ##For srfm[0].header["CTYPE1"] = 'LINEAR'
+    xn = srfm[0].header["NAXIS1"]
+    refx = srfm[0].header["CRVAL1"]
+    step = srfm[0].header['CD1_1']
+    cr = srfm[0].header['CRPIX1']
+    #
+    xlist = [ refx + step*(i - cr) for i in np.arange(1, len(secondstar)+1) ]
+    #
+    name = 'spectraap3cx25smoothsky'
+
+    hover = HoverTool(
+            tooltips=[
+                ("index", "$index"),
+                ("(x,y)", "($x{1}, $y)"),
+            ]
+        )
+
+    #Create ColumnDataSource
+    x = np.array(xlist)
+    y = np.array(secondstar)
+    #Create y for each smooth. Need to fix this
+    ysmooth3 = convolve(y, Box1DKernel(3))
+    ysmooth5 = convolve(y, Box1DKernel(5))
+
+    source = ColumnDataSource(data=dict(x=x,y=y))
+    source3 = ColumnDataSource(data=dict(x=x,y=ysmooth3))
+    source5 = ColumnDataSource(data=dict(x=x,y=ysmooth5))
+
+    plot = figure(x_axis_label='Angstrom', y_axis_label='Y')
+    plot.add_tools(hover)
+    plot.add_tools(tools.ResizeTool())
+    #Eraaseplot.line(xlist,secondstar)
+    plot.line('x','y',source=source)
+
+    ##Callback in JS
+    callback = CustomJS(args=dict(source=source,source3=source3,source5=source5), code="""
+            var data = source.data;
+            var data3 = source3.data;
+            var data5 = source5.data;
+            var f = cb_obj.value
+            y = data['y']
+            y3 = data3['y']
+            y5 = data5['y']
+            
+            if (f == 3.0){
+            for (i = 0; i < y.length; i++) {
+                y[i] = y3[i]
+            }
+            }
+            
+            if (f == 5.0){
+            for (i = 0; i < y.length; i++) {
+                y[i] = y5[i]
+            }
+            }
+            source.trigger('change');
+        """)
+
+
+    #Set up slider
+    slider = Slider(title="Smooth Curve", value=1.0, start=1.0, end=5.0, step=2.0,callback=callback)
+
+    layout = column(slider, plot)
 #    output_file(name+'try.html')
 #    show(layout)
 #
@@ -233,23 +233,23 @@ def polynomial():
 
 
 #    # Create a polynomial line graph with those arguments
-    x = list(range(_from, to + 1))
-    fig = figure(title="Polynomial")
-    fig.line(x, [i ** 2 for i in x], color=color, line_width=2)
+#    x = list(range(_from, to + 1))
+#    fig = figure(title="Polynomial")
+#    fig.line(x, [i ** 2 for i in x], color=color, line_width=2)
 
     js_resources = INLINE.render_js()
     css_resources = INLINE.render_css()
 
-    script, div = components(fig)
+    script, div = components(plot)
     html = flask.render_template(
         'embed.html',
         plot_script=script,
         plot_div=div,
         js_resources=js_resources,
         css_resources=css_resources,
-        color=color,
-        _from=_from,
-        to=to
+        center=center,
+        high=high,
+        low=low
     )
     return encode_utf8(html)
 
@@ -262,4 +262,5 @@ if __name__ == '__main__':
         print("Missing required argument: -p/--port")
         sys.exit(1)
     app.debug = True
-    app.run(host='grades.manuelpm.me',port=int(args.port), debug=False)
+    #app.run(host='grades.manuelpm.me',port=int(args.port), debug=False)
+    app.run(host='127.0.0.1',port=int(args.port), debug=False)
