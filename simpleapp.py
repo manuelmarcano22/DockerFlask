@@ -13,7 +13,7 @@ from bokeh.plotting import figure, output_file
 from bokeh.io import output_file, show, curdoc, show
 from bokeh.resources import CDN, INLINE
 from bokeh.embed import autoload_static, components
-from bokeh.models import HoverTool, tools, ColumnDataSource, CustomJS, Slider
+from bokeh.models import HoverTool, tools, ColumnDataSource, CustomJS, Slider, BoxAnnotation
 from bokeh.layouts import  column, row
 from astropy.convolution import convolve, Box1DKernel
 import numpy as np
@@ -39,13 +39,8 @@ start = int(round(time.time()))
 #iraf.images.imutil()
 #iraf.images.imutil.imarith(fitsfile1, '*', exptime, 'cx25sexm.fits')
 
-
-
-
-
-
 #app
-@app.route("/")
+@app.route("/cx25")
 def polynomial():
     """ Very simple embedding of a polynomial chart
     """
@@ -225,10 +220,31 @@ def polynomial():
     c2 = figure(x_axis_label='abc')
     c2.line(x,y)
 
-    p = row(plot,c2)
+    #
+    #boxes = []
+#    boxes = BoxAnnotation(plot=plot, 
+#    	    left=int(center-abs(low)), right=int(center+high), 
+#    	    fill_color='gray', fill_alpha=0.3)
+    boxes = BoxAnnotation( 
+    	    left=center-abs(low), right=center+high, 
+    	    fill_color='red', fill_alpha=0.3)
+    #plot.renderers.extend(boxes)
+    c2.add_layout(boxes)
+    hover2 = HoverTool(
+            tooltips=[
+                ("index", "$index"),
+                ("(x,y)", "($x{1}, $y)"),
+            ]
+        )
+    c2.add_tools(hover2)
     
-    #layout = column(slider, plot)
+
+    #If two in column
+    p = row(plot,c2)
     layout = column(slider, p)
+    
+    # If you want in in a column
+    #layout = column([slider, plot, c2])
 
 
 #    output_file(name+'try.html')
