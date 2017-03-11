@@ -9,12 +9,12 @@ from astropy.io import fits
 from stsci.tools import capable
 capable.OF_GRAPHICS = False
 from pyraf import iraf
-from bokeh.plotting import figure, output_file, show
-from bokeh.io import output_file, show, curdoc
+from bokeh.plotting import figure, output_file
+from bokeh.io import output_file, show, curdoc, show
 from bokeh.resources import CDN, INLINE
 from bokeh.embed import autoload_static, components
 from bokeh.models import HoverTool, tools, ColumnDataSource, CustomJS, Slider
-from bokeh.layouts import  column
+from bokeh.layouts import  column, row
 from astropy.convolution import convolve, Box1DKernel
 import numpy as np
 from shutil import copyfile
@@ -216,7 +216,21 @@ def polynomial():
     #Set up slider
     slider = Slider(title="Smooth Curve", value=1.0, start=1.0, end=5.0, step=2.0,callback=callback)
 
-    layout = column(slider, plot)
+# #Set aperture
+    ape = fits.open('cx25sexm.fits')
+    ape = ape[0].data
+    #Default is half
+    y = ape[:,int(ape.shape[1]/2)]
+    x = list(range(y.shape[0]))
+    c2 = figure(x_axis_label='abc')
+    c2.line(x,y)
+
+    p = row(plot,c2)
+    
+    #layout = column(slider, plot)
+    layout = column(slider, p)
+
+
 #    output_file(name+'try.html')
 #    show(layout)
 #
