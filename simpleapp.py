@@ -69,6 +69,8 @@ def polynomial():
     if os.path.exists('cx25sexm.ms.fits'):
         os.rename('cx25sexm.ms.fits','cx25sexm.msrecent.fits')
         os.remove('cx25sexm.fits')
+ 
+    
 
     if not os.path.exists('database'):
         os.makedirs('database')
@@ -142,6 +144,9 @@ def polynomial():
     #iraf.noao.twodspec.apextract.apall(ParList='static/cx25/cx25.par')
     iraf.noao.apextract.apall.saveParList(filename='uparm/cx25.par')
     iraf.noao.twodspec.apextract.apall(ParList='uparm/cx25.par')
+    
+    #Copy to static
+    copyfile('cx25sexm.ms.fits','static/cx25/cx25sexm.ms.fits')
     ###### end spectracx25.py
 
 
