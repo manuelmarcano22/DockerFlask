@@ -12,7 +12,7 @@
 <script type="text/javascript" src="{{url_for('static',filename='js9support.min.js') }}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='js9.min.js') }}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='js9plugins.js') }}"></script>
-<script type="text/javascript" src="{{url_for('static',filename='cx25/cx25.js') }}"></script>
+<script type="text/javascript" src="/static/{{sourcename}}/{{sourcename}}.js"></script>
 
     <title>Embed Demo</title>
 
@@ -40,7 +40,8 @@
     </form>
 
     <p>
-<a href="{{url_for('static',filename='cx25/cx25sexm.ms.fits') }}"> Download fits </a>
+    <!--<a href="{{url_for('static',filename='{{sourcename}}/{{sourcename}}sexm.ms.fits') }}"> Download fits </a> -->
+<a href="/static/{{sourcename}}/{{sourcename}}sexm.ms.fits"> Download fits </a>
     </p>
 
     {{ plot_div|indent(4)|safe }}
@@ -136,13 +137,13 @@ regions:
 Files:
 </td>
 <td>
-<a href='javascript:JS9.Load("static/cx25/cx25pre.fits", {scale:"log"});'>1</a>
+	<a href='javascript:JS9.Load("static/{{sourcename}}/{{sourcename}}pre.fits", {scale:"log"});'>1</a>
 </td>
 <td>
-<a href='javascript:JS9.Load("static/cx25/cx25.fits", {scale:"log"});'>2</a>
+	<a href='javascript:JS9.Load("static/{{sourcename}}/{{sourcename}}.fits", {scale:"log"});'>2</a>
 </td>
 <td>
-<a href='javascript:JS9.LoadRegions("static/cx25/cx25.reg");'>Region</a>
+<a href='javascript:JS9.LoadRegions("static/{{sourcename}}/{{sourcename}}.reg");'>Region</a>
 </td>
 </tr>
 
@@ -172,7 +173,7 @@ $(".zoom").on(click, function(evt){
 
 $(".zoomuno").on(click, function(evt){
   var s = $(evt.currentTarget).attr("id");
-  JS9.SetPan(1700,600);
+  JS9.SetPan(1000,1000);
   JS9.SetZoom(.3);
   JS9.SetZoom(s.charAt(1));
   return false;

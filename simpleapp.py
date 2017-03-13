@@ -40,7 +40,7 @@ def index():
 
 #For cx25
 #Define the source
-sourcename = 'cx25'
+sourcename = 'cx59'
 @app.route("/"+ sourcename)
 def polynomial():
     """ Very simple embedding of a Bokeh Plot
@@ -245,9 +245,11 @@ def polynomial():
         css_resources=css_resources,
         center=center,
         high=high,
-        low=low
+        low=low,
+        sourcename=sourcename
     )
     return encode_utf8(html)
+
 
 
 if __name__ == '__main__':
@@ -258,5 +260,5 @@ if __name__ == '__main__':
         print("Missing required argument: -p/--port")
         sys.exit(1)
     app.debug = True
-    app.run(host='vimos.manuelpm.me',port=int(args.port), debug=False)
-    #app.run(host='127.0.0.1',port=int(args.port), debug=False)
+    #app.run(host='vimos.manuelpm.me',port=int(args.port), debug=False)
+    app.run(host='127.0.0.1',port=int(args.port), debug=True)
