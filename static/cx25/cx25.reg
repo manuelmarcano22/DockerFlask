@@ -1,3 +1,4 @@
 global color=green dashlist=8 3 width=1 font="helvetica 10 normal" fixed=0 edit=1 move=1 delete=1 select=1 highlite=1 dash=0 include=1 source=1 
 image 
 box(1690.47102673,597.761188477,146.65584036,4.88,0) # font="helvetica 18 normal" text={CX25}
+text(1690.47102673,627.761188477,cx25) {"fontSize":25}
