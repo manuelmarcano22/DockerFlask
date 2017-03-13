@@ -212,7 +212,6 @@ def polynomial():
             source.trigger('change');
         """)
 
-
     #Set up slider
     slider = Slider(title="Smooth Curve", value=1.0, start=1.0, end=5.0, step=2.0,callback=callback)
 
