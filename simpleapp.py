@@ -29,23 +29,19 @@ def getitem(obj, item, default):
 
 start = int(round(time.time()))
 
-# Temporary
-#fitsfile1 = 'static/cx25/cx25.fits'
-#fitsfile1d = fits.open(fitsfile1)
-##Exposure time to multiply the image
-#exptime = fitsfile1d[0].header['EXPTIME']
-#op = 'im1* '+str(exptime)
-#iraf.stsdas()
-#iraf.images.imutil()
-#iraf.images.imutil.imarith(fitsfile1, '*', exptime, 'cx25sexm.fits')
+#####
+#App
+####
 
-#app
-
+#Index
 @app.route('/')
 def index():
     return "Hello World"
 
-@app.route("/cx25")
+#For cx25
+#Define the source
+sourcename = 'cx25'
+@app.route("/"+ sourcename)
 def polynomial():
     """ Very simple embedding of a Bokeh Plot
     """
@@ -58,44 +54,33 @@ def polynomial():
     high = int(getitem(args, 'high', 50))
 
     ##---- begin spectracx25.py ----#
-    #
-    ##To modify the center, low and high parameter
-#    center = 100
-#    low = -10.1
-#    high = 50
-    #
-    ##name of apfile
-    #I am not sure if I need to do this
-    if os.path.exists('cx25sexm.ms.fits'):
-        os.rename('cx25sexm.ms.fits','cx25sexm.msrecent.fits')
-        os.remove('cx25sexm.fits')
- 
     
+    #I am not sure if I need to do this
+    if os.path.exists(sourcename+'sexm.ms.fits'):
+        os.rename(sourcename+'sexm.ms.fits',sourcename+'sexm.msrecent.fits')
+        os.remove(sourcename+'sexm.fits')
 
     if not os.path.exists('database'):
         os.makedirs('database')
         os.makedirs('uparm')
     #filename = 'static/cx25/database/apcx25sexm' 
-    filename = 'database/apcx25sexm' 
-    copyfile('static/cx25/database/apcx25sexm',filename)
-    copyfile('static/cx25/twcapextt.par','uparm/twcapextt.par')
+    filename = 'database/ap'+sourcename+'sexm' 
+    copyfile('static/'+sourcename+'/database/ap'+sourcename+'sexm',filename)
+    copyfile('static/'+sourcename+'/twcapextt.par','uparm/twcapextt.par')
     ###name original SEXM
     ##fitsfile1 = 'VI_SEXM_577734_2011-06-24T05:56:42.518_G475_MR_402230_Q4_hi.fits'
-    fitsfile1 = 'static/cx25/cx25.fits'
+    fitsfile1 = 'static/'+sourcename+'/'+sourcename+'.fits'
     fitsfile1d = fits.open(fitsfile1)
-    #
     ###Exposure time to multiply the image
     exptime = fitsfile1d[0].header['EXPTIME']
     op = 'im1* '+str(exptime)
-    ###
     iraf.stsdas()
     iraf.images.imutil()
     #iraf.images.imutil.imarith(fitsfile1, '*', exptime, 'static/cx25/cx25sexm.fits')
-    iraf.images.imutil.imarith(fitsfile1, '*', exptime, 'cx25sexm.fits')
-    ##
+    iraf.images.imutil.imarith(fitsfile1, '*', exptime, sourcename+'sexm.fits')
     ###Work with image
     #fitsfile = 'static/cx25/cx25sexm.fits'
-    fitsfile = 'cx25sexm.fits'
+    fitsfile = sourcename+'sexm.fits'
     fitsdata = fits.getdata(fitsfile)
     ###Default for dispesion line is half of the image
     dispersion = fitsdata[:,fitsdata.shape[1]/2]
@@ -127,7 +112,7 @@ def polynomial():
     #http://vivaldi.ll.iac.es/sieinvens/siepedia/pmwiki.php?n=HOWTOs.PythonianIRAF
     iraf.noao.apextract.apall.setParam('input',fitsfile)
     #try output
-    iraf.noao.apextract.apall.setParam('output','cx25sexm.ms.fits')
+    iraf.noao.apextract.apall.setParam('output',sourcename+'sexm.ms.fits')
     #
     ##iraf.noao.twodspec.apextract.apall.setParam('lower','-5.0')
     ##iraf.noao.twodspec.apextract.apall.setParam('upper','1.0')
@@ -142,21 +127,19 @@ def polynomial():
     iraf.noao.twodspec.apextract.apall.setParam('find','no')
     #iraf.noao.apextract.apall.saveParList(filename='static/cx25/cx25.par')
     #iraf.noao.twodspec.apextract.apall(ParList='static/cx25/cx25.par')
-    iraf.noao.apextract.apall.saveParList(filename='uparm/cx25.par')
-    iraf.noao.twodspec.apextract.apall(ParList='uparm/cx25.par')
+    iraf.noao.apextract.apall.saveParList(filename='uparm/'+sourcename+'.par')
+    iraf.noao.twodspec.apextract.apall(ParList='uparm/'+sourcename+'.par')
     
-    #Copy to static
-    copyfile('cx25sexm.ms.fits','static/cx25/cx25sexm.ms.fits')
+    #Copy to static to download
+    copyfile(sourcename+'sexm.ms.fits','static/'+sourcename+'/'+sourcename+'sexm.ms.fits')
     ###### end spectracx25.py
-
-
 
     #########begin createpsectrawithbokeh.py 
     ##Get data
     #I am not usre if I need this. 
-    if not os.path.exists('cx25sexm.msrecent.fits'):
-        srfm = fits.open('static/cx25/cx25sexm.ms.fits')
-    srfm = fits.open('cx25sexm.ms.fits')
+    if not os.path.exists(sourcename+'sexm.msrecent.fits'):
+        srfm = fits.open('static/'+sourcename+'/'+sourcename+'sexm.ms.fits')
+    srfm = fits.open(sourcename+'sexm.ms.fits')
     secondstar = srfm[0].data
     #
     ##For srfm[0].header["CTYPE1"] = 'LINEAR'
@@ -167,8 +150,6 @@ def polynomial():
     #
     xlist = [ refx + step*(i - cr) for i in np.arange(1, len(secondstar)+1) ]
     #
-    name = 'spectraap3cx25smoothsky'
-
     hover = HoverTool(
             tooltips=[
                 ("index", "$index"),
@@ -221,7 +202,7 @@ def polynomial():
     slider = Slider(title="Smooth Curve", value=1.0, start=1.0, end=5.0, step=2.0,callback=callback)
 
 # #Set aperture
-    ape = fits.open('cx25sexm.fits')
+    ape = fits.open(sourcename+'sexm.fits')
     ape = ape[0].data
     #Default is half
     y = ape[:,int(ape.shape[1]/2)]
@@ -229,15 +210,10 @@ def polynomial():
     c2 = figure(x_axis_label='abc')
     c2.line(x,y)
 
-    #
-    #boxes = []
-#    boxes = BoxAnnotation(plot=plot, 
-#    	    left=int(center-abs(low)), right=int(center+high), 
-#    	    fill_color='gray', fill_alpha=0.3)
     boxes = BoxAnnotation( 
     	    left=center-abs(low), right=center+high, 
     	    fill_color='red', fill_alpha=0.3)
-    #plot.renderers.extend(boxes)
+    
     c2.add_layout(boxes)
     hover2 = HoverTool(
             tooltips=[
@@ -255,30 +231,7 @@ def polynomial():
     # If you want in in a column
     #layout = column([slider, plot, c2])
 
-
-#    output_file(name+'try.html')
-#    show(layout)
-#
-#    #create html and js for standalone
-#    #Js is a js file that provides data for the plot and the tag is the tag to include in the html document.
-#    #js, tag = autoload_static(plot, CDN, "{{site.baseurl}}/images/bokehgraphs/"+name+".js")
-#    js, tag = autoload_static(layout, CDN, "{{site.baseurl}}/images/bokehgraphs/"+name+".js")
-#
-#    ##To save it in files
-#
-#    with open(name+'.js','w') as jsfile:
-#            jsfile.write(js)
-#
-#    with open(name+'.html','w') as htmlfile:
-#            htmlfile.write(tag)
-#
 #    ##### end createpsectrawithbokeh.py 
-
-
-#    # Create a polynomial line graph with those arguments
-#    x = list(range(_from, to + 1))
-#    fig = figure(title="Polynomial")
-#    fig.line(x, [i ** 2 for i in x], color=color, line_width=2)
 
     js_resources = INLINE.render_js()
     css_resources = INLINE.render_css()
@@ -305,5 +258,5 @@ if __name__ == '__main__':
         print("Missing required argument: -p/--port")
         sys.exit(1)
     app.debug = True
-    app.run(host='vimos.manuelpm.me',port=int(args.port), debug=False)
-    #app.run(host='127.0.0.1',port=int(args.port), debug=False)
+    #app.run(host='vimos.manuelpm.me',port=int(args.port), debug=False)
+    app.run(host='127.0.0.1',port=int(args.port), debug=False)
