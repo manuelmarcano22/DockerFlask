@@ -40,6 +40,11 @@ start = int(round(time.time()))
 #iraf.images.imutil.imarith(fitsfile1, '*', exptime, 'cx25sexm.fits')
 
 #app
+
+@app.route('/')
+def index():
+    return "Hello World"
+
 @app.route("/cx25")
 def polynomial():
     """ Very simple embedding of a polynomial chart
@@ -296,5 +301,5 @@ if __name__ == '__main__':
         print("Missing required argument: -p/--port")
         sys.exit(1)
     app.debug = True
-    #app.run(host='grades.manuelpm.me',port=int(args.port), debug=False)
-    app.run(host='127.0.0.1',port=int(args.port), debug=False)
+    app.run(host='grades.manuelpm.me',port=int(args.port), debug=False)
+    #app.run(host='127.0.0.1',port=int(args.port), debug=False)
