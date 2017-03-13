@@ -47,7 +47,7 @@ def index():
 
 @app.route("/cx25")
 def polynomial():
-    """ Very simple embedding of a polynomial chart
+    """ Very simple embedding of a Bokeh Plot
     """
     # Grab the inputs arguments from the URL
     args = flask.request.args

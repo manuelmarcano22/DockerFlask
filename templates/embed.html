@@ -43,7 +43,162 @@
     {{ plot_div|indent(4)|safe }}
 
     <br/>
+
+<!-- TO load at loading time -->
+<div>
+<table cellspacing="15">
+<tr valign="bottom">
+<td>
+<table cellspacing="3">
+<tr valign="bottom">
+<td colspan="4">
+Choose a JS9 menu action to perform:
+</td>
+</tr>
+
+<tr valign="top">
+<td>
+zoom:
+</td>
+<td>
+<button id="in" class="zoom2">zoom in</button>
+</td>
+<td>
+<button id="out" class="zoom2">zoom out</button>
+</td>
+</tr>
+
+<tr valign="top">
+<td>
+zoom:
+</td>
+<td>
+<button id="z1" class="zoomuno">zoom1</button>
+</td>
+<td>
+<button id="z2" class="zoom">zoom2</button>
+</td>
+<td>
+<button id="z4" class="zoom">zoom4</button> 
+</td>
+</tr>
+
+<tr valign="top">
+<td>
+scale:
+</td>
+<td>
+<button id="log" class="scale">log</button> 
+</td>
+<td>
+<button id="linear" class="scale">linear</button>
+</td>
+<td>
+<button id="squared" class="scale">squared</button>
+</td>
+</tr>
+
+<tr valign="top">
+<td>
+cmap:   
+</td>
+<td>
+<button id="grey" class="color">grey</button>
+</td>
+<td>
+<button id="heat" class="color">heat</button>
+</td>
+<td>
+<button id="cool" class="color">cool</button>
+</td>
+</tr>
+
+<tr valign="top">
+<td>
+regions:
+</td>
+<td>
+<button id="circle" class="region">circle</button>
+</td>
+<td>
+<button id="box" class="region">box</button>
+</td>
+<td>
+<button id="ellipse" class="region">ellipse</button>
+</td>
+</tr>
+
+<tr valign="top">
+<td>
+Files:
+</td>
+<td>
+<a href='javascript:JS9.Load("static/cx25/cx25pre.fits", {scale:"log"});'>1</a>
+</td>
+<td>
+<a href='javascript:JS9.Load("static/cx25/cx25.fits", {scale:"log"});'>2</a>
+</td>
+<td>
+<a href='javascript:JS9.LoadRegions("static/cx25/cx25.reg");'>Region</a>
+</td>
+</tr>
+
+</table>
+
+<td>
+<div class="JS9Panner" data-width="200px" data-height="200px"></div>
+</td>
+</tr>
+
+</table>
 <div class="JS9">
+</div>
+
+<script type="text/javascript">
+var click;
+if( "ontouchstart" in document.documentElement ){
+  click = "touchstart";
+} else {
+  click = "click";
+}
+$(".zoom").on(click, function(evt){
+  var s = $(evt.currentTarget).attr("id");
+  JS9.SetZoom(s.charAt(1));
+  return false;
+});
+
+$(".zoomuno").on(click, function(evt){
+  var s = $(evt.currentTarget).attr("id");
+  JS9.SetPan(1700,600);
+  JS9.SetZoom(.3);
+  JS9.SetZoom(s.charAt(1));
+  return false;
+});
+
+$(".zoom2").on(click, function(evt){
+  var s = $(evt.currentTarget).attr("id");
+  var s2 = "|1"
+  JS9.SetZoom(s.concat(s2));
+  return false;
+});
+
+$(".scale").on(click, function(evt){
+  var s = $(evt.currentTarget).attr("id");
+  JS9.SetScale(s);
+  return false;
+});
+$(".color").on(click, function(evt){
+  var s = $(evt.currentTarget).attr("id");
+  JS9.SetColormap(s);
+  return false;
+});
+$(".region").on(click, function(evt){
+  var s = $(evt.currentTarget).attr("id");
+  JS9.AddRegions(s);
+  return false;
+});
+JS9.Panner.HTML = "";
+</script>
 
 
   </body>
