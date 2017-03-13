@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv='content-type' content='text/html; charset=utf-8' />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1" > 
+<meta name="viewport" content="width=device-width, initial-scale=1" >
+<link type="image/x-icon" rel="shortcut icon" href="./favicon.ico">
+<link type="text/css" rel="stylesheet" href="{{url_for('static',filename='transfer.css') }}">
+
+    <title>CX Spectra</title>
+<body bgcolor=white>
+    
+	<table border="0" cellpadding="10">
+      <tr>
+        <td>
+	<img src="{{url_for('static',filename='images/tux2.png',width=50,padding=2,margin-top=40,margin-left=25)}}"/>
+        </td>
+        <td>
+          <h1>CX Spectra</h1>
+        </td>
+      </tr>
+    </table>
+
+    <p> Sources </p>
+
+<ul>
+{% for filename in allsources %}
+<li> <a href="/{{filename}}">{{filename}} </a></li>
+{% endfor %}
+</ul>
+
+</body>
+</html>

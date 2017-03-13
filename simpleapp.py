@@ -36,7 +36,8 @@ start = int(round(time.time()))
 #Index
 @app.route('/')
 def index():
-    return "Hello World"
+    allsources = [ d for d in os.listdir('static') if os.path.isdir('static/'+d) and d.startswith('c')]
+    return flask.render_template('index.html', allsources=allsources)
 
 #Define the source
 @app.route("/<string:sourcename>")
@@ -261,5 +262,5 @@ if __name__ == '__main__':
         print("Missing required argument: -p/--port")
         sys.exit(1)
     app.debug = True
-    app.run(host='vimos.manuelpm.me',port=int(args.port), debug=False)
-    #app.run(host='127.0.0.1',port=int(args.port), debug=True)
+    #app.run(host='vimos.manuelpm.me',port=int(args.port), debug=False)
+    app.run(host='127.0.0.1',port=int(args.port), debug=True)
