@@ -38,15 +38,16 @@ start = int(round(time.time()))
 def index():
     return "Hello World"
 
-#For cx25
 #Define the source
-sourcename = 'cx59'
-@app.route("/"+ sourcename)
-def polynomial():
+@app.route("/<string:sourcename>")
+def polynomial(sourcename):
     """ Very simple embedding of a Bokeh Plot
     """
     # Grab the inputs arguments from the URL
     args = flask.request.args
+
+#   #Need to do this because of unicode. Fix this
+    sourcename = str(sourcename)
 
     # Get all the form arguments in the url with defaults
     center = int(getitem(args, 'center', 100))
