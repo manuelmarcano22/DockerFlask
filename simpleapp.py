@@ -29,6 +29,12 @@ def getitem(obj, item, default):
 
 start = int(round(time.time()))
 
+##Application error
+@app.errorhandler(500)
+def page_not_found(e):
+    allsources = [ d for d in os.listdir('static') if os.path.isdir('static/'+d) and d.startswith('c')]
+    return flask.render_template('500.html', allsources=allsources)
+
 #####
 #App
 ####
