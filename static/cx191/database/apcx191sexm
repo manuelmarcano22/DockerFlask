@@ -1,0 +1,28 @@
+# Tue 00:39:44 14-Mar-2017
+begin	aperture cx191sexm 1 1250. 145.1846
+	image	cx191sexm
+	aperture	1
+	beam	1
+	center	1250. 145.1846
+	low	-1249. -3.567228
+	high	1250. 3.658635
+	background
+		xmin -10.
+		xmax 10.
+		function chebyshev
+		order 1
+		sample -10:-6,6:10
+		naverage -3
+		niterate 0
+		low_reject 3.
+		high_reject 3.
+		grow 0.
+	axis	2
+	curve	6
+		2.
+		2.
+		150.
+		2500.
+		-0.5017967
+		1.545512
+
