@@ -8,7 +8,8 @@ function downloadJSAtOnload() {
   else window.onload = downloadJSAtOnload;
   function func() {
   JS9.SetPan(1000,1000);
-  JS9.SetZoom(.3);
-  JS9.SetScale('log',1000,10000);
+  JS9.SetZoom(.2);
+  //JS9.SetScale('log',1000,10000);
+  JS9.SetScale('linear',1000,10000);
   JS9.LoadRegions("static/cx59/cx59.reg");
   }

@@ -53,7 +53,7 @@ def polynomial(sourcename):
     # Get all the form arguments in the url with defaults
     center = int(getitem(args, 'center', 100))
     low = int(getitem(args, 'low',-10.1 ))
-    high = int(getitem(args, 'high', 50))
+    high = int(getitem(args, 'high', 15))
 
     ##---- begin spectracx25.py ----#
     
@@ -154,7 +154,7 @@ def polynomial(sourcename):
     #
     hover = HoverTool(
             tooltips=[
-                ("index", "$index"),
+                #("index", "$index"),
                 ("(x,y)", "($x{1}, $y)"),
             ]
         )
@@ -209,7 +209,7 @@ def polynomial(sourcename):
     #Default is half
     y = ape[:,int(ape.shape[1]/2)]
     x = list(range(y.shape[0]))
-    c2 = figure(x_axis_label='abc')
+    c2 = figure(x_axis_label='index')
     c2.line(x,y)
 
     boxes = BoxAnnotation( 
@@ -224,6 +224,8 @@ def polynomial(sourcename):
             ]
         )
     c2.add_tools(hover2)
+    c2.add_tools(tools.ResizeTool())
+
     
 
     #If two in column
@@ -262,5 +264,5 @@ if __name__ == '__main__':
         print("Missing required argument: -p/--port")
         sys.exit(1)
     app.debug = True
-    app.run(host='vimos.manuelpm.me',port=int(args.port), debug=True)
-    #app.run(host='127.0.0.1',port=int(args.port), debug=True)
+    #app.run(host='vimos.manuelpm.me',port=int(args.port), debug=False)
+    app.run(host='127.0.0.1',port=int(args.port), debug=True)

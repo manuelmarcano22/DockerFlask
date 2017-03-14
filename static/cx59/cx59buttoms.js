@@ -10,18 +10,55 @@ $(".zoom").on(click, function(evt){
   return false;
 });
 
-$(".zoomuno").on(click, function(evt){
-  var s = $(evt.currentTarget).attr("id");
-  JS9.SetPan(100,100);
-  JS9.SetZoom(.1);
-  JS9.SetZoom(s.charAt(1));
-  return false;
-});
 
 $(".zoom2").on(click, function(evt){
   var s = $(evt.currentTarget).attr("id");
   var s2 = "|1"
   JS9.SetZoom(s.concat(s2));
+  return false;
+});
+
+$(".zoomuno").on(click, function(evt){
+  var s = $(evt.currentTarget).attr("id");
+  JS9.SetPan(107,300);
+  JS9.SetZoom(2.4);
+  return false;
+});
+
+$(".zoomdos").on(click, function(evt){
+  var s = $(evt.currentTarget).attr("id");
+  JS9.SetPan(230,660);
+  JS9.SetZoom(2.4);
+  return false;
+});
+
+
+$(".zoomtres").on(click, function(evt){
+  var s = $(evt.currentTarget).attr("id");
+  var s2 = "|1"
+  JS9.SetPan(774,398);
+  JS9.SetZoom(2.4);
+  return false;
+});
+
+$(".zoomcuatro").on(click, function(evt){
+  var s = $(evt.currentTarget).attr("id");
+  var s2 = "|1"
+  JS9.SetPan(1306,1208);
+  JS9.SetZoom(2.4);
+  return false;
+});
+
+$(".zoomcinco").on(click, function(evt){
+  var s = $(evt.currentTarget).attr("id");
+  JS9.SetPan(1481,530);
+  JS9.SetZoom(2.4);
+  return false;
+});
+
+$(".zoomseis").on(click, function(evt){
+  JS9.SetPan(1739,284);
+  JS9.SetZoom(2.4);
   return false;
 });
 

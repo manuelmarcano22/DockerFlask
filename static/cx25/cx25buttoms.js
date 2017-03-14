@@ -12,7 +12,7 @@ $(".zoom").on(click, function(evt){
 
 $(".zoomuno").on(click, function(evt){
   var s = $(evt.currentTarget).attr("id");
-  JS9.SetPan(1000,1000);
+  JS9.SetPan(1650,600);
   JS9.SetZoom(.1);
   JS9.SetZoom(s.charAt(1));
   return false;
