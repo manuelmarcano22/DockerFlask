@@ -1,0 +1,10 @@
+global color=green dashlist=8 3 width=1 font="helvetica 10 normal" fixed=0 edit=1 move=1 delete=1 select=1 highlite=1 dash=0 include=1 source=1 
+image 
+box(619.049469105,1869.24937261,132.072740527,4.88,0) # font="helvetica 18 normal" text={CX719}
+text(619.049469105,1879.24937261,CX719) {"fontSize":25}
+box(834.906341978,2057.58533682,46.015955212,4.88,0) # font="helvetica 18 normal" text={CX879}
+text(834.906341978,2067.58533682,CX879) {"fontSize":25}
+box(1199.98772007,1908.33647271,49.8010708316,4.88,0) # font="helvetica 18 normal" text={CX969}
+text(1199.98772007,1918.33647271,CX969) {"fontSize":25}
+box(1787.04514685,803.783146316,45.4753322749,4.88,0) # font="helvetica 18 normal" text={CX119}
+text(1787.04514685,813.783146316,CX119) {"fontSize":25}
