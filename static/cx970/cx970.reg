@@ -1,0 +1,6 @@
+global color=green dashlist=8 3 width=1 font="helvetica 10 normal" fixed=0 edit=1 move=1 delete=1 select=1 highlite=1 dash=0 include=1 source=1 
+image 
+box(202.449562104,1428.01676156,55.0161578657,4.88,0) # font="helvetica 18 normal" text={CX544}
+text(202.449562104,1438.01676156,CX544) {"fontSize":25}
+box(1968.28940735,2287.76395381,37.546726518,4.88,0) # font="helvetica 18 normal" text={CX970}
+text(1968.28940735,2297.76395381,CX970) {"fontSize":25}

@@ -1,0 +1,27 @@
+# Tue 15:56:19 14-Mar-2017
+begin	aperture cx967sexm 1 1250. 49.51036
+	image	cx967sexm
+	aperture	1
+	beam	1
+	center	1250. 49.51036
+	low	-1249. -9.223508
+	high	1250. 19.66813
+	background
+		xmin -10.
+		xmax 10.
+		function chebyshev
+		order 1
+		sample -10:-6,6:10
+		naverage -3
+		niterate 0
+		low_reject 3.
+		high_reject 3.
+		grow 0.
+	axis	2
+	curve	5
+		2.
+		1.
+		1.
+		2500.
+		0.
+

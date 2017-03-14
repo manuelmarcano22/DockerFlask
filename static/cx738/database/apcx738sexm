@@ -1,0 +1,27 @@
+# Tue 14:53:10 14-Mar-2017
+begin	aperture cx738sexm 1 1249. 140.6336
+	image	cx738sexm
+	aperture	1
+	beam	1
+	center	1249. 140.6336
+	low	-1248. -10.89548
+	high	1250. 10.20262
+	background
+		xmin -10.
+		xmax 10.
+		function chebyshev
+		order 1
+		sample -10:-6,6:10
+		naverage -3
+		niterate 0
+		low_reject 3.
+		high_reject 3.
+		grow 0.
+	axis	2
+	curve	5
+		2.
+		1.
+		1.
+		2499.
+		0.
+
