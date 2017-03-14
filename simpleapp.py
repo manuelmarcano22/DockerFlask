@@ -219,7 +219,7 @@ def polynomial(sourcename):
     c2.add_layout(boxes)
     hover2 = HoverTool(
             tooltips=[
-                ("index", "$index"),
+    #            ("index", "$index"),
                 ("(x,y)", "($x{1}, $y)"),
             ]
         )
