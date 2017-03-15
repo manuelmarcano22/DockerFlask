@@ -176,7 +176,7 @@ def polynomial(sourcename):
     source3 = ColumnDataSource(data=dict(x=x,y=ysmooth3))
     source5 = ColumnDataSource(data=dict(x=x,y=ysmooth5))
 
-    plot = figure(x_axis_label='Angstrom', y_axis_label='Y')
+    plot = figure(x_axis_label='Angstrom', y_axis_label='Y',title="Spectra")
     plot.add_tools(hover)
     plot.add_tools(tools.ResizeTool())
     #Eraaseplot.line(xlist,secondstar)
@@ -215,7 +215,7 @@ def polynomial(sourcename):
     #Default is half
     y = ape[:,int(ape.shape[1]/2)]
     x = list(range(y.shape[0]))
-    c2 = figure(x_axis_label='index')
+    c2 = figure(x_axis_label='index',title='Apertures',toolbar_location="above")
     c2.line(x,y)
 
     boxes = BoxAnnotation( 
