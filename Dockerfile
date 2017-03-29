@@ -86,7 +86,7 @@ ADD templates /root/templates/
 ADD static /root/static/
 ADD images /root/images/
 
-EXPOSE  8000
+EXPOSE  8080
 ADD start.sh /root/start.sh
 RUN chmod +x start.sh
 ENTRYPOINT ["/bin/bash","start.sh"]
