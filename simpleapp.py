@@ -270,5 +270,5 @@ if __name__ == '__main__':
         print("Missing required argument: -p/--port")
         sys.exit(1)
     app.debug = True
-    app.run(host='vimos.manuelpm.me',port=int(args.port), debug=False)
+    app.run(host='vimos.manuelpm.me',port=int(args.port), debug=False, threaded=True)
     #app.run(host='0.0.0.0',port=int(args.port), debug=True)
