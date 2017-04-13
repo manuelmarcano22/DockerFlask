@@ -11,4 +11,5 @@ uwsgi --socket 0.0.0.0:80  --callable app  --protocol=http -w wsgi
 uwsgi --socket 0.0.0.0:80   --protocol=http -w wsgi
 #failed nginx and supervisor
 /opt/conda/bin/supervisord -c /opt/conda/etc/supervisord.conf
-
+#
+--static-map /static=/root/static
