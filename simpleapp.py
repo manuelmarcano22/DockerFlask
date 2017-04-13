@@ -19,7 +19,7 @@ from astropy.convolution import convolve, Box1DKernel
 import numpy as np
 from shutil import copyfile
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 def getitem(obj, item, default):
     if item not in obj:
@@ -30,7 +30,7 @@ def getitem(obj, item, default):
 start = int(round(time.time()))
 
 ##Application error
-@app.errorhandler(500)
+@application.errorhandler(500)
 def page_not_found(e):
     allsources = [ d for d in os.listdir('static') if os.path.isdir('static/'+d) and d.startswith('c')]
     return flask.render_template('500.html', allsources=allsources)
@@ -40,13 +40,13 @@ def page_not_found(e):
 ####
 
 #Index
-@app.route('/')
+@application.route('/')
 def index():
     allsources = [ d for d in os.listdir('static') if os.path.isdir('static/'+d) and d.startswith('c')]
     return flask.render_template('index.html', allsources=allsources)
 
 #Define the source
-@app.route("/<string:sourcename>")
+@application.route("/<string:sourcename>")
 def polynomial(sourcename):
     """ Very simple embedding of a Bokeh Plot
     """
@@ -269,6 +269,6 @@ if __name__ == '__main__':
     if args.port == None:
         print("Missing required argument: -p/--port")
         sys.exit(1)
-    app.debug = True
-    app.run(host='vimos.manuelpm.me',port=int(args.port), debug=False, threaded=True)
-    #app.run(host='0.0.0.0',port=int(args.port), debug=True)
+    application.debug = True
+    #app.run(host='vimos.manuelpm.me',port=int(args.port), debug=False, threaded=True)
+    application.run(host='0.0.0.0',port=int(args.port), debug=False, threaded=True)

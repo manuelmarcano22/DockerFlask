@@ -5,3 +5,10 @@ docker exec -it nameofcontainer bash
 
 #for the webpage 
 http://transfer.manuelpm.me/images/SEXM.fits
+
+#failed wsgi
+uwsgi --socket 0.0.0.0:80  --callable app  --protocol=http -w wsgi
+uwsgi --socket 0.0.0.0:80   --protocol=http -w wsgi
+#failed nginx and supervisor
+/opt/conda/bin/supervisord -c /opt/conda/etc/supervisord.conf
+

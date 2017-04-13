@@ -75,18 +75,49 @@ ENV PATH /opt/conda/bin:$PATH
 RUN /opt/conda/bin/conda config --add channels http://ssb.stsci.edu/astroconda
 RUN /opt/conda/bin/conda create -y -n iraf27 python=2.7 iraf pyraf Flask bokeh
 
+#nginx and uwsgi
+RUN pip install uwsgi supervisor uwsgitop
+
+ADD uwsgi.ini /etc/uwsgi/
+COPY uwsgi.ini /etc/uwsgi/
+#ADD uwsgi2.ini /root/uwsgi2.ini	
+
+
+RUN wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm
+RUN rpm -ivh epel-release-7-9.noarch.rpm
+RUN yum -y install nginx
+
+
+# Make NGINX run on the foreground
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+# Remove default configuration from Nginx
+#RUN rm /etc/nginx/conf.d/default.conf
+# Copy the modified Nginx conf
+COPY nginx.conf /etc/nginx/conf.d/
+
+#Supervisord
+COPY supervisord.conf /opt/conda/etc/supervisord.conf
+
+
+# forward request and error logs to docker log collector
+RUN ln -sf /dev/stdout /var/log/nginx/access.log \
+	&& ln -sf /dev/stderr /var/log/nginx/error.log
+
+
+
 WORKDIR "/root"
 ADD login.cl /root/login.cl
 #RUN /opt/conda/envs/iraf27/bin/mkiraf
 
 # Bundle app source
 COPY simpleapp.py /root/simpleapp.py
+COPY wsgi.py /root/wsgi.py
 COPY .tmux.conf /root/.tmux.conf
 ADD templates /root/templates/
 ADD static /root/static/
 ADD images /root/images/
 
-EXPOSE  8080
+EXPOSE  80 8080
 ADD start.sh /root/start.sh
 RUN chmod +x start.sh
 ENTRYPOINT ["/bin/bash","start.sh"]
