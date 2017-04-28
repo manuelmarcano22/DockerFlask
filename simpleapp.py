@@ -271,5 +271,5 @@ if __name__ == '__main__':
         sys.exit(1)
     application.debug = True
     #app.run(threadded=True)
-    #application.run(host='vimos.manuelpm.me',port=int(args.port), debug=False, threaded=True)
-    application.run(host='0.0.0.0',port=int(args.port), debug=False, threaded=True)
+    application.run(host='vimos.manuelpm.me',port=int(args.port), debug=False, threaded=True)
+    #application.run(host='0.0.0.0',port=int(args.port), debug=False, threaded=True)
