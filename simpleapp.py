@@ -216,7 +216,30 @@ def polynomial(sourcename):
     y = ape[:,int(ape.shape[1]/2)]
     x = list(range(y.shape[0]))
     c2 = figure(x_axis_label='index',title='Apertures',toolbar_location="above")
-    c2.line(x,y)
+    source2 = ColumnDataSource(data=dict(x=x,y=y))
+    sepaape = 20
+    sourceall2 = ColumnDataSource(data= dict([ (str(i), ape[:,i]  ) for i in list(range(0,ape.shape[1],sepaape)) ]))
+    
+    c2.line('x','y', source=source2)
+
+    callback2 = CustomJS(args=dict(source2 = source2, sourceall2 = sourceall2 ), code="""
+
+            var data2 = source2.data;
+            var data22 = sourceall2.data;
+            var f = cb_obj.value;
+            y = data2['y'];
+            y2 = data22[f.toFixed(0).toString()];
+            
+            
+            for (i = 0; i < y.length; i++) {
+                y[i] = y2[i];
+            }
+            source2.trigger('change');
+        """)
+
+
+
+    slider2 = Slider(title="Aperture", value=int(ape.shape[1]/2), start=0, end=int(ape.shape[1]), step=sepaape,callback=callback2)
 
     boxes = BoxAnnotation( 
     	    left=center-abs(low), right=center+high, 
@@ -236,7 +259,8 @@ def polynomial(sourcename):
 
     #If two in column
     p = row(plot,c2)
-    layout = column(slider, p)
+    layout = column(slider, slider2,p)
+#    layout = column(slider, p)
     
     # If you want in in a column
     #layout = column([slider, plot, c2])
@@ -271,5 +295,5 @@ if __name__ == '__main__':
         sys.exit(1)
     application.debug = True
     #app.run(threadded=True)
-    application.run(host='vimos.manuelpm.me',port=int(args.port), debug=False, threaded=True)
-    #application.run(host='0.0.0.0',port=int(args.port), debug=False, threaded=True)
+    #application.run(host='vimos.manuelpm.me',port=int(args.port), debug=False, threaded=True)
+    application.run(host='0.0.0.0',port=int(args.port), debug=False, threaded=True)
