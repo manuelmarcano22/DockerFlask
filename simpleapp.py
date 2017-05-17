@@ -58,8 +58,8 @@ def polynomial(sourcename):
 
     # Get all the form arguments in the url with defaults
     center = int(getitem(args, 'center', 100))
-    low = int(getitem(args, 'low',-10.1 ))
-    high = int(getitem(args, 'high', 15))
+    low = int(getitem(args, 'low',-5 ))
+    high = int(getitem(args, 'high', 5))
 
     ##---- begin spectracx25.py ----#
     
