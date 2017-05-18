@@ -133,6 +133,7 @@ def polynomial(sourcename):
     iraf.noao.twodspec.apextract.apall.setParam('upper','1.0')
     iraf.noao.twodspec.apextract.apall.setParam('apertures','1')
     iraf.noao.twodspec.apextract.apall.setParam('find','no')
+    iraf.noao.twodspec.apextract.apall.setParam('clean','yes')
     #iraf.noao.apextract.apall.saveParList(filename='static/cx25/cx25.par')
     #iraf.noao.twodspec.apextract.apall(ParList='static/cx25/cx25.par')
     iraf.noao.apextract.apall.saveParList(filename='uparm/'+sourcename+'.par')
@@ -148,7 +149,9 @@ def polynomial(sourcename):
     if not os.path.exists(sourcename+'sexm.msrecent.fits'):
         srfm = fits.open('static/'+sourcename+'/'+sourcename+'sexm.ms.fits')
     srfm = fits.open(sourcename+'sexm.ms.fits')
-    secondstar = srfm[0].data
+    secondstar = srfm[0].data[0][0] #If using clean profile
+    #secondstar = srfm[0].data #If not clean and weight profil  
+
     #
     ##For srfm[0].header["CTYPE1"] = 'LINEAR'
     xn = srfm[0].header["NAXIS1"]
