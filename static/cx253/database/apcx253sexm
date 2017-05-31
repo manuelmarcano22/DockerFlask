@@ -1,0 +1,28 @@
+# Sun 22:43:50 19-Mar-2017
+begin	aperture cx253sexm 1 1249. 166.9741
+	title	119.26   -5.00    5.00
+	image	cx253sexm
+	aperture	1
+	beam	1
+	center	1249. 166.9741
+	low	-1248. -4.337659
+	high	1250. 4.294862
+	background
+		xmin -10.
+		xmax 10.
+		function chebyshev
+		order 1
+		sample -10:-6,6:10
+		naverage -3
+		niterate 0
+		low_reject 3.
+		high_reject 3.
+		grow 0.
+	axis	2
+	curve	5
+		2.
+		1.
+		1.
+		2499.
+		0.
+
