@@ -218,11 +218,15 @@ def polynomial(sourcename):
     #Default is half
     y = ape[:,int(ape.shape[1]/2)]
     x = list(range(y.shape[0]))
-    c2 = figure(x_axis_label='index',title='Apertures',toolbar_location="above")
+    c2 = figure(x_axis_label='index',title='Wavelength',toolbar_location="above",active_scroll='wheel_zoom')
     source2 = ColumnDataSource(data=dict(x=x,y=y))
-    sepaape = 20
-    sourceall2 = ColumnDataSource(data= dict([ (str(i), ape[:,i]  ) for i in list(range(0,ape.shape[1],sepaape)) ]))
-    
+    sepaape = 5
+    sourceall2 = ColumnDataSource(data= dict([ (str(int(xlist[i])), ape[:,i]  ) for i in list(range(0,ape.shape[1],sepaape)) ]))
+
+    wavelist =  [ int(xlist[i]) for i in list(range(0,ape.shape[1],sepaape)) ]
+    sepawave = wavelist[1]- wavelist[0]
+
+
     c2.line('x','y', source=source2)
 
     callback2 = CustomJS(args=dict(source2 = source2, sourceall2 = sourceall2 ), code="""
@@ -231,9 +235,9 @@ def polynomial(sourcename):
             var data22 = sourceall2.data;
             var f = cb_obj.value;
             y = data2['y'];
-            y2 = data22[f.toFixed(0).toString()];
-            
-            
+            y2 = data22[f.toString()];
+
+
             for (i = 0; i < y.length; i++) {
                 y[i] = y2[i];
             }
@@ -242,12 +246,13 @@ def polynomial(sourcename):
 
 
 
-    slider2 = Slider(title="Aperture", value=int(ape.shape[1]/2), start=0, end=int(ape.shape[1]), step=sepaape,callback=callback2)
+    slider2 = Slider(title="Wavelength", value=wavelist[int(len(wavelist)/2)], 
+                     start=wavelist[0], end=wavelist[-1], step=sepawave,callback=callback2)
 
     boxes = BoxAnnotation( 
-    	    left=center-abs(low), right=center+high, 
-    	    fill_color='red', fill_alpha=0.3)
-    
+            left=center-abs(low), right=center+high, 
+            fill_color='red', fill_alpha=0.3)
+
     c2.add_layout(boxes)
     hover2 = HoverTool(
             tooltips=[
@@ -257,6 +262,7 @@ def polynomial(sourcename):
         )
     c2.add_tools(hover2)
     c2.add_tools(tools.ResizeTool())
+
 
     
 
