@@ -181,7 +181,7 @@ def polynomial(sourcename):
 
     plot = figure(x_axis_label='Angstrom', y_axis_label='Y',title="Spectra")
     plot.add_tools(hover)
-    plot.add_tools(tools.ResizeTool())
+    #plot.add_tools(tools.ResizeTool())
     #Eraaseplot.line(xlist,secondstar)
     plot.line('x','y',source=source)
 
@@ -261,7 +261,7 @@ def polynomial(sourcename):
             ]
         )
     c2.add_tools(hover2)
-    c2.add_tools(tools.ResizeTool())
+    #c2.add_tools(tools.ResizeTool())
 
 
     

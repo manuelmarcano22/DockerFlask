@@ -83,8 +83,9 @@ COPY uwsgi.ini /etc/uwsgi/
 #ADD uwsgi2.ini /root/uwsgi2.ini	
 
 
-RUN wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm
-RUN rpm -ivh epel-release-7-9.noarch.rpm
+#RUN wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm
+RUN yum -y install epel-release
+#RUN rpm -ivh epel-release-7-9.noarch.rpm
 RUN yum -y install nginx
 
 
